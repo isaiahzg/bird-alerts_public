@@ -22,3 +22,12 @@
             "RADIUS_MILES": "${{ vars.RADIUS_MILES }}"
           },
           "run": "python3 bird_alert.py"
+        },
+        {
+          "name": "Save seen sightings",
+          "run": "git config user.name \"bird-alerts\"\ngit config user.email \"bird-alerts@users.noreply.github.com\"\ngit add seen.json\ngit diff --cached --quiet || git commit -m \"Update seen sightings\"\ngit push\n"
+        }
+      ]
+    }
+  }
+}
