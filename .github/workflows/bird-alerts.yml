@@ -1,0 +1,24 @@
+{
+  "name": "Bird alerts",
+  "on": {
+    "schedule": [{ "cron": "*/15 * * * *" }],
+    "workflow_dispatch": null
+  },
+  "permissions": { "contents": "write" },
+  "concurrency": { "group": "bird-alerts", "cancel-in-progress": false },
+  "jobs": {
+    "check": {
+      "runs-on": "ubuntu-latest",
+      "timeout-minutes": 5,
+      "steps": [
+        { "uses": "actions/checkout@v5" },
+        {
+          "name": "Check eBird and send alerts",
+          "env": {
+            "EBIRD_API_KEY": "${{ secrets.EBIRD_API_KEY }}",
+            "NTFY_TOPIC": "${{ secrets.NTFY_TOPIC }}",
+            "HOME_LAT": "${{ secrets.HOME_LAT }}",
+            "HOME_LNG": "${{ secrets.HOME_LNG }}",
+            "RADIUS_MILES": "${{ vars.RADIUS_MILES }}"
+          },
+          "run": "python3 bird_alert.py"
